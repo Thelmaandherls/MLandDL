@@ -1,1 +1,42 @@
-#Currently in progress 
+
+#MODEL predicts a dsitricts median hosuing price give other data about other districts
+
+from pathlib import Path
+import os
+import pandas as pd 
+import tarfile 
+import numpy as np
+import matplotlib as plt
+import urllib.request
+import sys
+from packaging import version 
+import sklearn
+
+DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml2/master/"
+HOUSING_PATH = os.path.join("data", "01")
+HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
+
+def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
+    os.makedirs(name=housing_path, exist_ok= True)
+    tgz_path = os.path.join(housing_path, "housing.tgz")
+    urllib.request.urlretrieve(url=housing_url, filename=tgz_path)
+    housing_tgz = tarfile.open(name=tgz_path)
+    housing_tgz.extractall(path = housing_path)
+    housing_tgz.close()
+
+
+def load_housing_data(housing_path= HOUSING_PATH):
+    data_path = os.path.join(housing_path, "housing.csv")
+    return pd.read_csv(data_path)
+    
+
+#checking the data
+housing = load_housing_data()
+print(housing.info())
+print(housing["ocean_proximity"].value_counts())
+print(housing.describe())
+
+#plotting a histogram for each numerical attribute 
+housing.hist(bins=50, figsize=(12, 8))
+plt.plot()
+
